@@ -18,8 +18,8 @@
 <body class="hold-transition login-page">
 
 <form>
-    <input id="input1"/>
-    <input id="input2"/>
+    <input name="input1" id="input2"/>
+    <input name="input1" id="d"/>
     <input type="submit" value="提交" onclick="func()"/>
 </form>
 
@@ -37,8 +37,15 @@
 <script src="dist/js/public.js"></script>
 <script>
     function func(){
-        var v1 = $("#input1").val();
-        alert(v1);
+        var arr =[];
+        $("input[name='input1']").each(function(){
+            arr.push($(this).val());
+        })
+        var arr2 = arr.join("");
+        alert(arr2.length);
+
+
+
     }
 
 

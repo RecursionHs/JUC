@@ -11,7 +11,7 @@ public class DescriptionServiceImpl implements DescriptionService {
 
     @Autowired
     private DescriptionDao descriptionDao;
-
+    @Override
     public Description getLastDescription() {
         return descriptionDao.getLastDescription();
     }

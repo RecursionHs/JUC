@@ -103,6 +103,21 @@ function login() {
             return;
         }
     });
+    $.ajax({type:"POST",
+        dataType:"json",
+        url:"users/login",
+        contentType:"application/json;charset=utf-8",
+        data:JSON.stringify(data),
+        success:function (result) {
+            if  (result.resultCode == 200){
+                $('.alert-danger').css("display","none");
+                setCookie("tocken",result.data.userToken);
+            }
+        }
+
+
+
+    });
 }
 
 <!-- cookie操作 start-->

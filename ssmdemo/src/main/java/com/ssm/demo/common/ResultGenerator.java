@@ -1,8 +1,12 @@
 package com.ssm.demo.common;
 
 /**
+ * @Author hsir
+ * @Date 9:56 2019/2/1/001
+ * @Param
+ * @return
  * 响应结果生成工具
- */
+ **/
 public class ResultGenerator {
     private static final String DEFAULT_SUCCESS_MESSAGE = "SUCCESS";
     private static final String DEFAULT_FAIL_MESSAGE = "FAIL";

@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+/**
+ * @Author hsir
+ * @Date 16:24 2019/1/31/031       
+ * @Param 
+ * @return 
+ **/
 @RestController
 @RequestMapping("/users")
 public class AdminUserControler {

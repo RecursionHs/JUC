@@ -8,7 +8,12 @@ import com.ssm.demo.utils.NumberUtil;
 import com.ssm.demo.utils.SystemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+/**
+ * @Author hsir
+ * @Date 10:37 2019/2/1/001       
+ * @Param 
+ * @return 
+ **/
 @Service("adminUserService")
 public class AdminUserServiceImpl implements AdminUserService {
 
