@@ -12,21 +12,26 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-
+/**
+ * @Author hsir
+ * @Date 11:31 2019/2/22/022       
+ * @Param 
+ * @return
+ **/
 public class TokenToUserMethodArgumentResolver implements HandlerMethodArgumentResolver {
     @Resource
     private AdminUserService adminUserService;
 
     public TokenToUserMethodArgumentResolver() {
     }
-
+    @Override
     public boolean supportsParameter(MethodParameter parameter) {
         if (parameter.hasParameterAnnotation(TokenToUser.class)) {
             return true;
         }
         return false;
     }
-
+    @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         if (parameter.getParameterAnnotation(TokenToUser.class) instanceof TokenToUser) {
             AdminUser user = null;

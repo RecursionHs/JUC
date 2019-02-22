@@ -3,11 +3,12 @@ package com.ssm.demo.service.impl;
 import com.ssm.demo.dao.AdminUserDao;
 import com.ssm.demo.entity.AdminUser;
 import com.ssm.demo.service.AdminUserService;
-import com.ssm.demo.utils.MD5Util;
-import com.ssm.demo.utils.NumberUtil;
-import com.ssm.demo.utils.SystemUtil;
+import com.ssm.demo.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 /**
  * @Author hsir
  * @Date 10:37 2019/2/1/001       
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Service;
  * @return 
  **/
 @Service("adminUserService")
-public class AdminUserServiceImpl implements AdminUserService {
+public class AdminUserServiceImpl implements AdminUserService
+{
 
     @Autowired
     private AdminUserDao adminUserDao;
@@ -36,12 +38,26 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public AdminUser getAdminUserByToken(String userToken) {
-        return null;
+        AdminUser  adminUser= adminUserDao.getAdminUserByToken(userToken);
+        return adminUser;
+    }
+
+    @Override
+    public PageResult getAdminUserPage(PageUtil pageUtil) {
+        List<AdminUser> adminUsers = adminUserDao.findAdminUsers(pageUtil);
+        int totalAdminUser = adminUserDao.getTotalAdminUser(pageUtil);
+        PageResult pageResult = new PageResult(totalAdminUser, pageUtil.getPage(), adminUsers, pageUtil.getLimit());
+        return pageResult;
     }
 
     private String getNewToken(String sessionId,Long userId){
         String src = sessionId + userId + NumberUtil.genRandomNum(4);
         return SystemUtil.genToken(src);
     }
+
+
+
+
+
 
 }

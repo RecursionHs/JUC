@@ -89,7 +89,7 @@ function login() {
                 $('.alert-danger').css("display", "none");
                 setCookie("token", result.data.userToken);
                 alert("登录成功");
-                window.location.href = "/";
+                window.location.href = "/user.html";
             }
             ;
             if (result.resultCode == 500) {
@@ -151,12 +151,8 @@ function delCookie(name) {
  */
 function checkCookie() {
     if (getCookie("token") == null) {
-        $('#tip').html("正在跳转至登录页面...");
         alert("未登录！");
         window.location.href = "login.html";
-    }
-    else {
-        $('#tip').html("Hello SSM!<br>看到此页面证明你登陆成功，且cookie中已经有合法的用户令牌了！");
     }
 }
 

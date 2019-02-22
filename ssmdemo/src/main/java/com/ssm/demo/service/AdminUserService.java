@@ -1,6 +1,11 @@
 package com.ssm.demo.service;
 
 import com.ssm.demo.entity.AdminUser;
+import com.ssm.demo.utils.PageResult;
+import com.ssm.demo.utils.PageUtil;
+
+
+
 /**
  * @Author hsir
  * @Date 10:36 2019/2/1/001       
@@ -26,4 +31,7 @@ public interface AdminUserService {
      * 根据token获取用户记录
      **/
     AdminUser getAdminUserByToken(String userToken);
+
+
+    PageResult getAdminUserPage(PageUtil pageUtil);
 }
