@@ -1,4 +1,8 @@
-$("#jqGrid").jqGrid({
+$(function(){
+    //隐藏错误提示框
+    $('.add-error-info').css("display","none");
+    $('.edit-error-info').css("display","none");
+    $("#jqGrid").jqGrid({
     //请求后台 JSON 数据的 URL
     url: 'users/list',
     //后台返回的数据格式
@@ -47,3 +51,158 @@ $("#jqGrid").jqGrid({
         $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
     }
 });
+});
+    function userEdit(){
+        var id = getSelectedRow();
+        if (id == null){
+            return;
+        }
+        $('#userId').val(id);
+
+        //点击编辑按钮后执行操作
+        var modal = new Custombox.modal({
+            content: {
+                effect: 'fadein',
+                target: '#modalEdit'
+            }
+            });
+            modal.open();
+    }
+    //增加按钮modal
+    function userAdd(){
+        var modal = new Custombox.modal({
+            content: {
+                effect: 'fadein',
+                target: '#modalAdd'
+            }
+        });
+            modal.open();
+    }
+
+    //数据验证
+function validObjectForAdd() {
+    var userName = $('#userName').val();
+    if(isNull(userName)){
+        showErrorInfo("用户名不能为空！");
+        return false;
+    }
+    if(!validUserName(userName)){
+        showErrorInfo("请输入符合规范的用户名!");
+        return false;
+    }
+    var password = $('#password').val();
+    if(isNull(password)){
+        showErrorInfo("密码不能为空！");
+        return false;
+    }
+    if(!validPassword(password)){
+        showErrorInfo("请输入符合规范的密码！");
+        return false;
+    }
+    return true;
+}
+function   validObjectForEdit(){
+        var password = $('#passwordEdit').val();
+        if(isNull(password)){
+            showErrorInfo("密码不能为空!");
+            alert(password);
+            return false;
+        }
+        if(!validPassword(password)){
+            showErrorInfo("请输入符合规范的密码！");
+            return false;
+        }
+        return true;
+}
+
+$('#saveButton').click(function () {
+    if(validObjectForAdd()){
+        var userName = $('#userName').val();
+        var password = $('#password').val();
+        var data={"userName":userName,"password":password};
+        $.ajax({
+            type:'POST',
+            dataType:"json",
+            url:'users/add',
+            contentType:"application/json;charset=utf-8",
+            data:JSON.stringify(data),
+            beforeSend: function (request) {
+                request.setRequestHeader("token",getCookie("token"));
+            },
+            success:function (result) {
+                checkResultCode(result);
+                if(result.resultCode == 200){
+                    closeModal();
+                    alert("修改成功!");
+                    reload();
+                }else {
+                    closeModal();
+                    alert(result.message);
+                }
+            },
+            error:function () {
+                reset();
+                alert("操作失败!");
+            }
+
+        });
+    }
+
+});
+
+$('#editButton').click(function () {
+        if(validObjectForEdit()){
+            var userId = $('#userId').val();
+            var  password = $('#passwordEdit').val();
+            var data = {"id":userId,"password":password};
+            $.ajax({
+                type:'POST',
+                dataType:"json",
+                url:"users/updatePassword",
+                contentType:"application/json;charset=utf-8",
+                data:JSON.stringify(data),
+                beforeSend: function (request) {
+                    request.setRequestHeader("token",getCookie("token"));
+                },
+                success:function (result) {
+                    checkResultCode(result);
+                    if(result.resultCode == 200){
+                        closeModal();
+                        alert("更新成功！");
+                        reload();
+                    }else {
+                        closeModal();
+                        alert(result.message);
+                    }
+                },
+                error:function () {
+                    reset();
+                    alert("操作失败!");
+                }
+
+            });
+        }
+
+});
+
+function closeModal() {
+        reset();
+        Custombox.modal.closeAll();
+}
+
+function reset(){
+    //隐藏错误提示框
+    $('.add-error-info').css("display", "none");
+    $('.edit-error-info').css("display", "none");
+    //清空数据
+    $('#password').val('');
+    $('#passwordEdit').val('');
+    $('#userName').val('');
+}
+function reload() {
+    reset();
+    var page = $("#jqGrid").jqGrid('getGridParam', 'page');
+    $("#jqGrid").jqGrid('setGridParam', {
+        page: page
+    }).trigger("reloadGrid");
+}

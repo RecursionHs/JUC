@@ -162,3 +162,31 @@ function showErrorInfo(info) {
     $('.alert-danger').css("display", "block");
     $('.alert-danger').html(info);
 }
+
+/**
+ * 检查cookie
+ */
+function checkResultCode(code) {
+    if (code == 402) {
+        window.location.href = "login.html";
+    }
+}
+
+/**
+ * 获取jqGrid选中的一条记录
+ * @returns {*}
+ */
+function getSelectedRow(){
+    var grid = $('#jqGrid');
+    var rowKey = grid.getGridParam("selrow");
+    if(!rowKey){
+        alert("请选择一条记录");
+        return;
+    }
+    var selectedIds =  grid.getGridParam("selarrrow");
+    if(selectedIds.length > 1){
+        alert("只能选择一条记录");
+        return;
+    }
+    return selectedIds[0];
+}

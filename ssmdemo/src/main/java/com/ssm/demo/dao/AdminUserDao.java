@@ -1,7 +1,6 @@
 package com.ssm.demo.dao;
 
 import com.ssm.demo.entity.AdminUser;
-import com.ssm.demo.utils.PageUtil;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -41,4 +40,12 @@ public interface AdminUserDao {
      * @return int
      **/
     int getTotalAdminUser(Map param);
+
+    AdminUser selectByUserName(String userName);
+
+    int addUser(AdminUser user);
+
+    int updateUserPassword(AdminUser user);
+
+    AdminUser selectByUserId(Long id);
 }

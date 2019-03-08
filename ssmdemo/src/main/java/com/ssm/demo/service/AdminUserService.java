@@ -34,4 +34,12 @@ public interface AdminUserService {
 
 
     PageResult getAdminUserPage(PageUtil pageUtil);
+
+    AdminUser selectByUserName(String userName);
+
+    int save(AdminUser user);
+
+    int updateUserPassword(AdminUser user);
+
+    AdminUser selectByUserId(Long id);
 }

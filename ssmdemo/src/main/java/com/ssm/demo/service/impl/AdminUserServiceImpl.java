@@ -50,14 +50,34 @@ public class AdminUserServiceImpl implements AdminUserService
         return pageResult;
     }
 
+
     private String getNewToken(String sessionId,Long userId){
         String src = sessionId + userId + NumberUtil.genRandomNum(4);
         return SystemUtil.genToken(src);
     }
 
+    @Override
+    public AdminUser selectByUserName(String userName) {
+        AdminUser adminUser = adminUserDao.selectByUserName(userName);
+        return adminUser;
+    }
 
+    @Override
+    public int save(AdminUser user) {
+        user.setPassword(MD5Util.MD5Encode(user.getPassword(),"UTF-8"));
+        return adminUserDao.addUser(user);
+    }
 
+    @Override
+    public int updateUserPassword(AdminUser user) {
+        user.setPassword(MD5Util.MD5Encode(user.getPassword(),"UTF-8"));
+        return adminUserDao.updateUserPassword(user);
+    }
 
+    @Override
+    public AdminUser selectByUserId(Long id) {
+        return adminUserDao.selectByUserId(id);
+    }
 
 
 }

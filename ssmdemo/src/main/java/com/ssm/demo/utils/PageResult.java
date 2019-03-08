@@ -67,5 +67,6 @@ public class PageResult implements Serializable {
             this.currPage = currPage;
             this.list = list;
             this.pageSize = pageSize;
+            this.totalPage = (int)Math.ceil((double)totalCount/pageSize);
         }
 }

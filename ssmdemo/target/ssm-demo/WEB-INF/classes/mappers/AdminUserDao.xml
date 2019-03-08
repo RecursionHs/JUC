@@ -42,6 +42,22 @@
             where is_deleted=0
     </select>
 
+    <select id="selectByUserName" resultMap="AdminUserResult">
+          select * from tb_admin_user where user_name = #{username}
+    </select>
 
+    <insert id="addUser" parameterType="com.ssm.demo.entity.AdminUser" >
+        insert  into tb_admin_user (user_name,password_md5)
+        values(#{userName},#{password})
+    </insert>
+
+    <update id="updateUserPassword" parameterType="com.ssm.demo.entity.AdminUser">
+        update tb_admin_user set password_md5=#{password}
+        where id=#{id}
+    </update>
+
+    <select id="selectByUserId" parameterType="java.lang.Long" resultMap="AdminUserResult">
+        select * from tb_admin_user where id = #{id}
+    </select>
 
 </mapper>
