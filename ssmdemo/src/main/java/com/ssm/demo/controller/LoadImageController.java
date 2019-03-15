@@ -3,7 +3,7 @@ package com.ssm.demo.controller;
 import com.ssm.demo.common.Result;
 import com.ssm.demo.common.ResultGenerator;
 import org.apache.commons.io.FileUtils;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
@@ -18,9 +18,14 @@ import java.util.Random;
  * @Date 2019/3/8/008
  * @Version 1.0
  **/
+@RestController
+@RequestMapping("/images")
 public class LoadImageController {
 
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ResponseBody
     public Result upload(HttpServletRequest request, @RequestParam("file")MultipartFile file){
+        System.out.println("haha");
         ServletContext context = request.getSession().getServletContext();
         String uploadDir = context.getRealPath("upload");
         System.out.println(uploadDir+"  :!!!!!!!!!!!!! "+file.getOriginalFilename().lastIndexOf("."));
@@ -45,6 +50,7 @@ public class LoadImageController {
             FileUtils.writeByteArrayToFile(new File(uploadDir,imaName),file.getBytes());
             Result result = ResultGenerator.genSuccessResult();
             result.setData("/upload/" + imaName);
+            System.out.println(result);
             return result;
         }catch (Exception e){
             System.out.println("文件写入失败！");
