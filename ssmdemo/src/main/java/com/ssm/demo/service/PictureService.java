@@ -1,6 +1,7 @@
 package com.ssm.demo.service;
 
 import com.ssm.demo.entity.Picture;
+import com.ssm.demo.utils.PageUtil;
 
 /**
  * @Author hsir
@@ -11,4 +12,7 @@ public interface PictureService {
 
     int save(Picture picture);
 
+    Object getPicturePage(PageUtil pu);
+
+    Picture findOnePicture(Integer id);
 }

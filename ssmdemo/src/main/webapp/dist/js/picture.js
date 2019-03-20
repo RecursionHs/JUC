@@ -162,3 +162,32 @@ function validObject() {
     }
     return true;
 }
+
+function pictureEdit(){
+        reset();
+        $('.modal-title').html("图片编辑");
+        var id = getSelectedRow();
+        if( id == null){
+            return;
+        }
+
+        //查询图片数据
+        $.ajax({
+            type : "GET",
+            url  : "pictures/info/" + id,
+            contentType : "application/json",
+            beforeSend : function (request) {
+                request.setRequestHeader("token",getCookie("token"));
+            },
+            success : function (r) {
+                checkResultCode(r.resultCode);
+                if(r.resultCode == 200 && r.data != null){
+                    //填充数据到modal
+                    $('#pictureId').val(r.data.id);
+                    $('#picturePath').val(r.data.path);
+                    $('#pictureRemark').val(r.data.remark);
+                }
+            },
+        });
+            $('#pictureModal').modal('show');
+}

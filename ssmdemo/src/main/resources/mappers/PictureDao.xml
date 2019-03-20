@@ -14,7 +14,21 @@
           values (#{path},#{remark})
     </insert>
 
+    <select id="findPictures" parameterType="Map" resultMap="PictureResult">
+        select id,path,remark,create_time from tb_ssm_picture
+        where is_deleted=0
+        order by id desc
+        <if test="start!=null and limit!=null">
+            limit #{start},#{limit}
+        </if>
+    </select>
 
+    <select id="getTotalPictures" parameterType="Map" resultType="int">
+        select count(*) from tb_ssm_picture
+        where is_deleted=0
+    </select>
 
-
+    <select id="findPictureById" parameterType="Integer" resultMap="PictureResult">
+        select id,path,remark from tb_ssm_picture where is_deleted = 0 and id= #{id}
+    </select>
 </mapper>
