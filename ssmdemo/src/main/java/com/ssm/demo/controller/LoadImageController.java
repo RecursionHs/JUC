@@ -35,13 +35,13 @@ public class LoadImageController {
         Random random = new Random();
         String imaName = "";
         if("jpg".equals(type)){
-            imaName = dateFormat.format(new Date()) + random.nextInt(100) + "jpg";
+            imaName = dateFormat.format(new Date()) + random.nextInt(100) + ".jpg";
         }else if("png".equals(type)){
-            imaName = dateFormat.format(new Date()) + random.nextInt(100) + "png";
+            imaName = dateFormat.format(new Date()) + random.nextInt(100) + ".png";
         }else if("jpeg".equals(type)){
-            imaName = dateFormat.format(new Date()) + random.nextInt(100) + "jpeg";
+            imaName = dateFormat.format(new Date()) + random.nextInt(100) + ".jpeg";
         }else if("gif".equals(type)){
-            imaName = dateFormat.format(new Date()) + random.nextInt(100) + "gif";
+            imaName = dateFormat.format(new Date()) + random.nextInt(100) + ".gif";
         }else {
             return null;
         }
