@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,4 +69,31 @@ public class PictureController {
             return ResultGenerator.genSuccessResult(pic);
         }
 
+        @RequestMapping("/update")
+        public Result updatePicture(@TokenToUser AdminUser loginUser,@RequestBody Picture picture){
+            //验证登录状态
+            if(loginUser == null){
+                return ResultGenerator.genErrorResult(Constants.RESULT_CODE_NOT_LOGIN,"用户未登录！");
+            }
+            if(pictureService.updatePicture(picture) > 0){
+                return ResultGenerator.genSuccessResult();
+            } else {
+                return ResultGenerator.genFailResult("修改失败");
+            }
+        }
+
+        @RequestMapping("/delete")
+        public Result deletePicture(@RequestBody Integer[] ids,@TokenToUser AdminUser loginUser){
+            if(loginUser == null){
+                return ResultGenerator.genErrorResult(Constants.RESULT_CODE_NOT_LOGIN,"用户未登录！");
+            }
+            if(ids.length < 1){
+                return ResultGenerator.genErrorResult(Constants.RESULT_CODE_PARAM_ERROR,"参数异常!");
+            }
+            if(pictureService.deleteBatch(ids) > 0){
+                return ResultGenerator.genSuccessResult();
+            } else {
+                return ResultGenerator.genFailResult("删除失败");
+            }
+        }
 }

@@ -39,4 +39,14 @@ public class PictureServiceImpl implements PictureService {
     public Picture findOnePicture(Integer id) {
         return pictureDao.findPictureById(id);
     }
+
+    @Override
+    public int updatePicture(Picture picture) {
+        return pictureDao.updatePicture(picture);
+    }
+
+    @Override
+    public int deleteBatch(Integer[] ids) {
+        return pictureDao.deleteBatch(ids);
+    }
 }

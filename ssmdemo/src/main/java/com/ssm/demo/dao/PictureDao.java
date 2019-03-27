@@ -20,4 +20,8 @@ public interface PictureDao {
     int getTotalPictures(PageUtil pu);
 
     Picture findPictureById(Integer id);
+
+    int updatePicture(Picture picture);
+
+    int deleteBatch(Integer[] ids);
 }

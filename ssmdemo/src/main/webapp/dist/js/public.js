@@ -184,9 +184,9 @@ function getSelectedRow(){
         return;
     }
     var selectedIds =  grid.getGridParam("selarrrow");
-    if(selectedIds.length > 1){
-        alert("只能选择一条记录");
-        return;
-    }
-    return selectedIds[0];
+    // if(selectedIds.length > 1){
+    //     alert("只能选择一条记录");
+    //     return;
+    // }
+    return selectedIds;
 }

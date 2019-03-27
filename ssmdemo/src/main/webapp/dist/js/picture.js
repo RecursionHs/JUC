@@ -191,3 +191,35 @@ function pictureEdit(){
         });
             $('#pictureModal').modal('show');
 }
+
+function deletePicture() {
+      var ids = getSelectedRow();
+      if(ids == null){
+          return;
+      }
+      var idsarr = new Array();
+       idsarr.push(ids);
+       console.log(idsarr);
+       console.log(ids);
+    $.ajax({
+        type: 'POST',
+        dataType: "json",
+        url: 'pictures/delete',
+        contentType: "application/json; charset=utf-8",
+        beforeSend: function (request) {
+            //设置header值
+            request.setRequestHeader("token", getCookie("token"));
+        },
+
+        data: JSON.stringify(ids),
+        success: function (r) {
+            checkResultCode(r.resultCode);
+            if (r.resultCode == 200) {
+                alert("删除成功");
+                $("#jqGrid").trigger("reloadGrid");
+            } else {
+                alert(r.message);
+            }
+        }
+    });
+}

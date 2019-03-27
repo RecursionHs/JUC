@@ -15,4 +15,8 @@ public interface PictureService {
     Object getPicturePage(PageUtil pu);
 
     Picture findOnePicture(Integer id);
+
+    int updatePicture(Picture picture);
+
+    int deleteBatch(Integer[] ids);
 }
