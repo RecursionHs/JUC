@@ -1,5 +1,7 @@
 package com.hs.mvolatile;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @ClassName Demo2
  * @Description 不保证原子性
@@ -7,21 +9,17 @@ package com.hs.mvolatile;
  * @Date 2020/6/14 下午10:38
  * @Version 1.0
  */
-public class Demo2 {
-    private volatile static int num = 0;
+public class Demo3 {
+    //private volatile static int num = 0;
 
     /**
-     * 反编译class文件，看到get这个方法其实是有几部的！不能够保证原子性!
-     *       public static void get();
-     *     Code:
-     *        0: getstatic     #2                  // Field num:I
-     *        3: iconst_1
-     *        4: iadd
-     *        5: putstatic     #2                  // Field num:I
-     *        8: return
+     * 使用atomic原子类处理相关原子性问题
      */
+    private static AtomicInteger num = new AtomicInteger();
+
+
     public static void get(){
-        num++;
+        num.getAndIncrement();
     }
 
     public static void main(String[] args) {

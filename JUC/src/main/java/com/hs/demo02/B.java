@@ -57,6 +57,16 @@ public class B {
 
 }
 
+/**
+ *     默认非公平锁
+ *     public ReentrantLock() {
+ *         this.sync = new ReentrantLock.NonfairSync();
+ *     }
+ *
+ *     public ReentrantLock(boolean var1) {
+ *         this.sync = (ReentrantLock.Sync)(var1 ? new ReentrantLock.FairSync() : new ReentrantLock.NonfairSync());
+ *     }
+ */
 //判断等待、业务、唤醒
 class ResourcesClass2{
     private int number = 0;
