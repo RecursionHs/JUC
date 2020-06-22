@@ -25,22 +25,50 @@ public class WriteFile {
 
             try {
                 conn = DbUtils.getConn();
+                Integer countNum = getCountNum(conn, "EXE_WO");
+                int ccNum = countNum / maxCyc;
+                int yNum = countNum % maxCyc;
 
-                String sql = "select * from EXE_WO t where rownum<=900";
-                PreparedStatement prepareStatement = conn.prepareStatement(sql);
-                ResultSet resultSet = prepareStatement.executeQuery();
-                ResultSetMetaData metaData = resultSet.getMetaData();
-                int columnCount = metaData.getColumnCount();
-                for (int i = 1; i < columnCount; i++) {
-                    System.out.print(metaData.getColumnName(i) + " ");
+                for (int i = 0; i < maxCyc; i++) {
+                    String sql = "select * from (select ROWNUM as cnn,t.* from EXE_WO t) p where p.cnn >= ? and p.cnn <?";
+                    int tempi = i;
+                    poolExecutor.execute(()->{
+                        Connection connT = null;
+                        try {
+                            int addNum = 0;
+                            if(tempi == maxCyc){
+                                addNum = tempi*ccNum + yNum;
+                            }else {
+                                addNum = (tempi+1)*ccNum;
+                            }
+
+                            //connT = DbUtils.getConn();
+                            PreparedStatement pstmt = connT.prepareStatement(sql);
+                            pstmt.setString(1,String.valueOf(tempi * ccNum));
+                            pstmt.setString(2,String.valueOf(addNum));
+                            ResultSet resultSet = pstmt.executeQuery();
+                            ResultSetMetaData metaData = resultSet.getMetaData();
+                            int columnCount = metaData.getColumnCount();
+                            for (int j = 1; j < columnCount; j++) {
+                                System.out.print(metaData.getColumnName(j) + " ");
+                            }
+                            System.out.println();
+                            while (resultSet.next()){
+                                for (int j = 0; j < columnCount; j++) {
+                                    System.out.print(resultSet.getString(j+1) + " ");
+                                }
+                                System.out.println();
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }finally {
+                            DbUtils.closeConn(connT,null,null);
+                        }
+
+                    });
                 }
-                System.out.println();
-                while (resultSet.next()){
-                    for (int i = 0; i < columnCount; i++) {
-                        System.out.print(resultSet.getString(i+1) + " ");
-                    }
-                    System.out.println();
-                }
+
+                poolExecutor.shutdown();
 
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -49,5 +77,28 @@ public class WriteFile {
         }
 
     }
+
+    public static Integer getCountNum(Connection conn,String tab){
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("select count(1) from  " + tab);
+            while (resultSet.next()){
+                int num = Integer.valueOf(resultSet.getString(1));
+                System.out.println("获取总表总量为: " + num);
+                return num;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
     
+}
+class exeSqlTask implements Runnable{
+
+    @Override
+    public void run() {
+
+    }
 }

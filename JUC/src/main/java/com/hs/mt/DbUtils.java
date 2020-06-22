@@ -1,6 +1,10 @@
 package com.hs.mt;
 
 import java.sql.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @ClassName DbUtils
@@ -15,11 +19,18 @@ public class DbUtils {
     private static final String USER_NAME="CHECKADMS";
     private static final String PASS_WORD="CHECKADMS";
 
+    private static final int maxPoolSize = 100;
+    private static List<Connection> pool = Collections.synchronizedList(new LinkedList<>());
+
+
     static {
         try {
             Class.forName(DRIVER_NAME);
+            createConn(5);
 
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }catch (SQLException e){
             e.printStackTrace();
         }
     }
@@ -29,9 +40,27 @@ public class DbUtils {
      * @return
      * @throws SQLException
      */
-    public static Connection getConn() throws SQLException {
-        Connection conn = DriverManager.getConnection(JDBC_URL, USER_NAME, PASS_WORD);
-        return conn;
+    public synchronized static Connection getConn() throws SQLException {
+        if(pool.size() > 0){
+            Iterator<Connection> iterator = pool.iterator();
+            while (iterator.hasNext()){
+                Connection connection = iterator.next();
+                if(connection != null){
+                    iterator.remove();
+                    return connection;
+                }
+            }
+        }
+        return  null;
+    }
+
+    public static List<Connection> createConn(int connNum) throws SQLException {
+        for (int i = 0; i < connNum; i++) {
+            Connection conn = DriverManager.getConnection(JDBC_URL, USER_NAME, PASS_WORD);
+            pool.add(conn);
+            System.out.println("添加连接:" + i);
+        }
+        return pool;
     }
 
     public static void closeConn(Connection conn, Statement statement, ResultSet rs){
@@ -43,7 +72,7 @@ public class DbUtils {
                 statement.close();
             }
             if(conn != null){
-                conn.close();
+                pool.add(conn);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -52,6 +81,9 @@ public class DbUtils {
     }
 
     public static void main(String[] args) throws SQLException {
+        System.out.println(getConn());
+        System.out.println(getConn());
+        System.out.println(getConn());
         System.out.println(getConn());
     }
 }
